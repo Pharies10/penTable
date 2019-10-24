@@ -22,15 +22,25 @@ var createTable = function(data)
     
 
     
-    var table = d3.select("tbody").selectAll("tr").data(data).enter().append("tr")
+    var table = d3.select("tbody").selectAll("tr").data(data).enter().append("tr").attr("id", function(d){
+        if (d.totalGrade<70)
+            {
+                return "lessThan70"
+            }
+        else{
+            
+            return "good"
+            
+        }
+    })
     
     table.append("td").append("img").attr("src", function(d){ return "penguins/" + d.picture;})
     table.append("td").text(function(d){ return d.quizMean;})
     table.append("td").text(function(d){ return d.hwMean;})
     table.append("td").text(function(d){ return d.testMean;})
     table.append("td").text(function(d){ return d.final[0].grade;})
+    table.append('td').text(function(d){ return d.totalGrade;})
     
-
     d3.select("thead").selectAll("th").data(data).enter()
     
     
@@ -125,10 +135,12 @@ var transformPen = function(pen)
        
     var HWMean= getHWMean(pen)*2
     
+    var total= qMean*.2+tMean*.3+HWMean*.15+pen.final[0].grade*.35
     
     pen.quizMean = qMean;
     pen.testMean = tMean;
     pen.hwMean = HWMean;
+    pen.totalGrade= total;
  
 }
 
@@ -213,3 +225,16 @@ var compareFinalData =function(a,b)
             {return -1;}
         
     }
+
+
+
+
+
+
+
+// extra work for the 10
+
+
+
+
+
